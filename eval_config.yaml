@@ -1,0 +1,61 @@
+experiment:
+  name: my-eval-run
+  shuffle: true # shuffle dataset splits when loading data
+  dataset:
+    - name: "workshop"
+      train: [
+        "./data/optimization_and_finetuning/one_tool_astra_train_curated.json",
+        "./data/optimization_and_finetuning/two_tools_astra_train_curated.json",
+        "./data/optimization_and_finetuning/three_tools_astra_train_curated.json"
+      ]
+      validation: [
+        "./data/optimization_and_finetuning/one_tool_astra_val_curated.json",
+        "./data/optimization_and_finetuning/two_tools_astra_val_curated.json",
+        "./data/optimization_and_finetuning/three_tools_astra_val_curated.json",
+        "./data/optimization_and_finetuning/cross_mcp_astra_three_tools_val_curated.json",
+        "./data/optimization_and_finetuning/cross_mcp_astra_two_tools_val_curated.json"
+      ]
+      test: [
+        "./data/optimization_and_finetuning/one_tool_astra_test_curated.json",
+        "./data/optimization_and_finetuning/two_tools_astra_test_curated.json",
+        "./data/optimization_and_finetuning/three_tools_astra_test_curated.json",
+        "./data/optimization_and_finetuning/cross_mcp_astra_three_tools_test_curated.json",
+        "./data/optimization_and_finetuning/cross_mcp_astra_two_tools_test_curated.json"
+      ]
+      limits: [500, 250, 0]  # [train, validation, test] limits; 0 means no limit
+
+job:
+  machine: L4           # L4 | T4 | A100 | A100_80GB — see README for model size guidance
+  gpus: 1               # Number of GPUs to use for the job
+
+gepa:
+  auto: medium
+  reflection_minibatch_size: 35
+  candidate_selection_strategy: current_best
+  skip_perfect_score: false
+  use_merge: false
+  num_threads: 32
+  seed: 0
+  task_max_tokens: 1600
+  reflection_max_tokens: 32000
+  output_dir: ./outputs
+
+vllm:
+  port: 8080
+  max_model_len: 4096
+  max_batch_size: 32
+  batch_timeout: 0.05
+  gpu_memory_utilization: 0.85
+  enforce_eager: false # Set true for T4  as it lacks shared memory for vLLM's Triton CUDA graph warmup
+  enable_chunked_prefill: false # see ref: https://docs.vllm.ai/en/v0.8.2/performance/optimization.html#chunked-prefill
+  max_num_batched_tokens: 2048  # use together with enable_chunked_prefill for better performance on long sequences
+  wsl_hack: true # Set true if running on WSL2 to avoid vLLM server startup issues
+
+models:
+  optimizer_model:
+    name: "GPT-5.6-Sol"
+    end_point: "azure/gpt-5.6-sol"
+  task_model:
+    name: "Gemma-3-4B"
+    hf_model_id: "google/gemma-3-4b-it"
+    path: "./data/models/"

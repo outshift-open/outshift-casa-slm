@@ -1,0 +1,341 @@
+[project]
+name = "casa-slm-paper"
+description = "Data generation, conversation generation, prompt optimization, fine-tuning, and evaluation for the CASA-SLM research paper"
+authors = [
+  { name="Arash Salarian", email="asalaria@cisco.com" },
+  { name="Chiara Troiani", email="chtroian@cisco.com" },
+  { name="Majed El Helou", email="melhelou@cisco.com" },
+  { name="Benjamin Ryder", email="beryder@cisco.com" },
+  { name="Jean Diaconu", email="jdiaconu@cisco.com" },
+  { name="Hervé Muyal", email="hmuyal@cisco.com" },
+  { name="Marcelo Yannuzzi", email="mayannuz@cisco.com" },
+]
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+requires-python = ">=3.13,<3.14"
+classifiers = [
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+]
+version = "0.0.1"
+dependencies = [
+  "cleanprompt~=0.1.1",
+  # The training environment needs Hub 0.x for the source Transformers 4.57 stack.
+  "huggingface_hub>=0.36,<2",
+  "jsonschema>=4.25,<5",
+  "langchain-core>=1.0,<2",
+  "langchain-openai>=1.0,<2",
+  "litellm~=1.90.2",
+  "litmodels~=0.1.8",
+  "mcp>=1.13.1,<2",
+  "numpy~=2.4.6",
+  "openai~=2.44.0",
+  "pandas~=3.0.3",
+  "psutil~=7.2.2",
+  "pydantic~=2.13.4",
+  "python-dotenv~=1.2.2",
+  "rich~=15.0.0",
+  "scikit-learn~=1.9.0",
+  "tqdm>=4.66.4,<5",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/cisco-eti/casa-slm-paper"
+"Bug Tracker" = "https://github.com/cisco-eti/casa-slm-paper/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.sdist]
+exclude = [
+  "/test",
+  "/.github",
+  "/.vscode",
+  ".gitignore",
+  ".editorconfig",
+  ".pre-commit-config.yaml",
+  "Makefile",
+  "Developer_notes.md"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/casa_slm"]
+
+[tool.pytest.ini_options]
+minversion = "9.0"
+testpaths = [ "test" ]
+
+[tool.mypy]
+ignore_missing_imports = true
+scripts_are_modules = true
+explicit_package_bases = true
+mypy_path = "src"
+exclude = [ 'wandb/' ]
+
+[tool.ruff]
+line-length = 120
+extend-include = ["*.ipynb"]
+exclude = [".ipynb_checkpoints"]
+
+[tool.ruff.lint]
+select = ["D", "I", "F", "N", "NPY", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["D104", "F401", "F403"]
+"src/casa_slm/data_generation/test/*.py" = ["D101", "D102", "D103"]
+"src/casa_slm/conversation_generation/agentic/tests/*.py" = ["D101", "D102", "D103"]
+"src/casa_slm/conversation_generation/data/task_tool/*.py" = ["D100", "D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pixi.workspace]
+channels = ["conda-forge", "nvidia"]
+platforms = [
+  "linux-64",
+  { name = "linux-64-cuda", platform = "linux-64", cuda = "13.0" }
+]
+
+[tool.pixi.pypi-dependencies]
+casa-slm-paper = { path = ".", editable = true }
+
+[tool.pixi.feature.dev.pypi-dependencies]
+pre-commit = "~=4.6.0"
+ruff = "~=0.16.0"
+mypy = "~=2.3.0"
+shellcheck-py = "~=0.11.0.1"
+jupyterlab = ">=4.5"
+ipywidgets = ">=8.1"
+pytest = ">=9.0"
+pytest-cov = ">=7.1"
+hatch = ">=1.17"
+build = ">=1.5"
+
+[tool.pixi.feature.dev.tasks]
+test-dev = { cmd = "pytest", description = "Run general unit tests." }
+
+[tool.pixi.feature.cpu]
+platforms = ["linux-64"]
+
+[tool.pixi.feature.cpu.pypi-dependencies]
+torch = { version = ">=2.11.0", index = "https://download.pytorch.org/whl/cpu" }
+transformers = "~=5.13.0"
+
+[tool.pixi.feature.gpu]
+platforms = ["linux-64-cuda"]
+
+[tool.pixi.feature.gpu.dependencies]
+cuda = ">=13.0"
+
+[tool.pixi.feature.gpu.pypi-dependencies]
+torch = { version = ">=2.11.0", index = "https://download.pytorch.org/whl/cu130" }
+transformers = "~=5.13.0"
+vllm = "~=0.23.0"
+
+[tool.pixi.feature.gpu.tasks.cuda-check]
+cmd = '''
+python -c "import torch; print(torch.__version__); print(torch.cuda.is_available())"
+'''
+description = "Check Torch import and CUDA availability."
+
+[tool.pixi.feature.dspy]
+pypi-dependencies = { dspy = "~=3.3.0" }
+
+[tool.pixi.feature.dspy.tasks.test-dspy]
+cmd = "pytest test-dspy/"
+description = "Run dspy unit tests."
+
+[tool.pixi.feature.dspy.tasks.check-dataset]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.check_dataset"
+description = "Check the dataset for issues."
+
+[tool.pixi.feature.gepa]
+pypi-dependencies = { gepa = "~=0.1.4" }
+
+[tool.pixi.feature.generation]
+platforms = ["linux-64"]
+
+[tool.pixi.feature.paper-gpu]
+platforms = ["linux-64-cuda"]
+
+[tool.pixi.feature.paper-gpu.dependencies]
+cuda = ">=13.0"
+
+[tool.pixi.feature.paper-gpu.pypi-dependencies]
+torch = { version = "==2.10.0", index = "https://download.pytorch.org/whl/cu130" }
+torchvision = { version = "==0.25.0", index = "https://download.pytorch.org/whl/cu130" }
+transformers = "==4.57.6"
+unsloth = "==2026.4.4"
+unsloth-zoo = "==2026.4.4"
+datasets = ">=4,<5"
+trl = "==0.24.0"
+optuna = ">=4.8,<5"
+optuna-dashboard = ">=0.20,<1"
+tensorboard = ">=2.20,<3"
+
+[tool.pixi.feature.paper-eval.pypi-dependencies]
+scipy = ">=1.17,<2"
+
+[tool.pixi.feature.gepa.tasks.test-gepa]
+cmd = "pytest test-gepa/"
+description = "Run GEPA unit tests."
+
+[tool.pixi.environments]
+default = { features = ["dev", "gpu"] }
+dev = { features = ["dev", "cpu"] }
+dspy = { features = ["dev", "gpu", "dspy"] }
+dspy-cpu = { features = ["dev", "cpu", "dspy"] }
+gepa = { features = ["dev", "gpu", "gepa"] }
+gepa-cpu = { features = ["dev", "cpu", "gepa"] }
+generation = { features = ["dev", "generation"] }
+paper-gpu = { features = ["dev", "paper-gpu"] }
+paper-eval = { features = ["dev", "gpu", "paper-eval"] }
+
+[tool.pixi.tasks]
+install = { cmd = "pixi install --all", description = "Install or refresh all pixi environments." }
+
+[tool.pixi.tasks.fix]
+cmd = "pre-commit run --all-files"
+default-environment = "dev"
+description = "Run formatters and checks with automatic fixes."
+
+[tool.pixi.tasks.check]
+cmd = """
+  ruff check
+  mypy .
+  pre-commit run check-yaml --all-files
+  pre-commit run check-added-large-files --all-files
+  pre-commit run check-case-conflict --all-files
+  pre-commit run shellcheck --all-files
+"""
+default-environment = "dev"
+description = "Run code checkers."
+
+[tool.pixi.tasks.run-once]
+cmd = """
+bash -c '
+  set -e
+  if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo "Git repository already exists. Skipping initialization."
+  else
+    echo "Initializing Git repository..."
+    git init --initial-branch=main
+    git add .
+    git commit -m "Initial commit"
+  fi
+  pre-commit install
+'
+"""
+default-environment = "dev"
+description = "Initialize a Git repository when needed and install pre-commit hooks."
+
+[tool.pixi.tasks.test]
+depends-on = [
+  { task="test-dev", environment="dev" },
+  { task="test-dspy", environment="dspy-cpu" },
+  { task="test-gepa", environment="gepa-cpu" },
+  { task="test-data-generation", environment="generation" },
+  { task="test-conversation-generation", environment="generation" }
+]
+description = "Run all unit tests in all environments, on CPU."
+
+[tool.pixi.feature.dev.tasks.test-paper-components]
+cmd = "pytest test/test_paired_balanced_builder.py"
+default-environment = "dev"
+description = "Run offline paired-balanced fine-tuning dataset tests."
+
+[tool.pixi.feature.dev.tasks.build-paired-balanced-dataset]
+cmd = "python -m casa_slm.model_finetuning.build_paired_balanced_dataset"
+default-environment = "dev"
+description = "Build a paired-balanced fine-tuning dataset from curated training data."
+
+[tool.pixi.feature.paper-gpu.tasks.finetune-sft]
+cmd = "python -m casa_slm.model_finetuning.train_sft"
+description = "Run response-only SFT with the selected Gemma profile."
+
+[tool.pixi.feature.paper-gpu.tasks.search-sft]
+cmd = "python -m casa_slm.model_finetuning.search_sft"
+description = "Search SFT hyperparameters with Optuna."
+
+[tool.pixi.feature.paper-gpu.tasks.finetune-grpo]
+cmd = "python -m casa_slm.model_finetuning.train_grpo"
+description = "Run GRPO from a selected merged SFT model."
+
+[tool.pixi.feature.paper-gpu.tasks.merge-finetune-checkpoint]
+cmd = "python -m casa_slm.model_finetuning.merge_checkpoint"
+description = "Merge a selected LoRA checkpoint into a standalone model."
+
+[tool.pixi.feature.paper-eval.tasks.evaluate-model]
+cmd = "python -m casa_slm.evaluation.run"
+description = "Evaluate a base, merged, or adapter model."
+
+[tool.pixi.feature.paper-eval.tasks.evaluate-checkpoints]
+cmd = "python -m casa_slm.evaluation.checkpoints"
+description = "Evaluate all checkpoints in a run on validation data."
+
+[tool.pixi.tasks.download-model]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.download_model"
+default-environment = "dev"
+description = "Download the task LLM and cache it on LitModels"
+
+[tool.pixi.tasks.show-config]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.show_config"
+default-environment = "dev"
+description = "Load, process and print the configuration file."
+
+[tool.pixi.tasks.check-llm]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.check_llm"
+default-environment = "dev"
+description = "Check optimizer-model access through OpenAI and LiteLLM clients."
+
+[tool.pixi.tasks.dspy-optimize]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.dspy"
+default-environment = "dspy"
+description = "Optimize the task-tool matcher prompt with DSPy GEPA."
+
+[tool.pixi.tasks.gepa-optimize]
+cmd = "python -m casa_slm.prompt_optimizer.scripts.gepa"
+default-environment = "gepa"
+description = "Optimize the task-tool matcher prompt with GEPA."
+
+[tool.pixi.feature.generation.tasks.generate-tasks]
+cmd = "python -m casa_slm.data_generation.multitool_task_generation"
+default-environment = "generation"
+description = "Generate synthetic tasks from bundled MCP tool definitions using an LLM."
+
+[tool.pixi.feature.generation.tasks.generate-matches]
+cmd = "python -m casa_slm.data_generation.synthetic_data_generator"
+default-environment = "generation"
+description = "Generate correct, wrong, and null task-tool matches without LLM calls."
+
+[tool.pixi.feature.generation.tasks.regroup-data]
+cmd = "python -m casa_slm.data_generation.regroup_curated_data"
+cwd = "src/casa_slm/data_generation"
+default-environment = "generation"
+description = "Regroup curated per-tool rows into complete task-level examples."
+
+[tool.pixi.feature.generation.tasks.extract-mcp-servers]
+cmd = "python -m casa_slm.data_generation.mcp_servers.generation.extract_mcp_servers"
+cwd = "src/casa_slm/data_generation"
+default-environment = "generation"
+description = "Extract live MCP tool schemas using Docker and configured server credentials."
+
+[tool.pixi.feature.generation.tasks.generate-conversations]
+cmd = "python -m casa_slm.conversation_generation.agentic.generate_dataset"
+default-environment = "generation"
+description = "Generate ASTRA multi-agent conversations, or validate inputs with --dry-run."
+
+[tool.pixi.feature.generation.tasks.test-data-generation]
+cmd = "pytest src/casa_slm/data_generation/test"
+default-environment = "generation"
+description = "Run data-generation tests without contacting LLM services."
+
+[tool.pixi.feature.generation.tasks.test-conversation-generation]
+cmd = "pytest src/casa_slm/conversation_generation/agentic/tests"
+default-environment = "generation"
+description = "Run conversation-generation tests without contacting LLM services."

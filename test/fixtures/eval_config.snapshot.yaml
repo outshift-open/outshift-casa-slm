@@ -1,0 +1,67 @@
+# Snapshot of eval_config.yaml for unit tests. Keep this stable unless the
+# configuration schema intentionally changes.
+
+experiment:
+  name: my-eval-run
+  shuffle: false
+  dataset:
+    - name: "one_tool"
+      train:
+        - "./data/one_tool_astra_train_curated.json"
+      validation:
+        - "./data/one_tool_astra_val_curated.json"
+      test:
+        - "./data/one_tool_astra_test_curated.json"
+      limits: [0, 0, 0]
+    - name: "two_tools"
+      train:
+        - "./data/two_tools_astra_train_curated.json"
+      validation:
+        - "./data/two_tools_astra_val_curated.json"
+      test:
+        - "./data/two_tools_astra_test_curated.json"
+      limits: [0, 0, 0]
+    - name: "three_tools"
+      train:
+        - "./data/three_tools_astra_train_curated.json"
+      validation:
+        - "./data/three_tools_astra_val_curated.json"
+      test:
+        - "./data/three_tools_astra_test_curated.json"
+      limits: [0, 0, 0]
+
+job:
+  machine: L4
+  gpus: 1
+
+gepa:
+  auto: light
+  reflection_minibatch_size: 35
+  candidate_selection_strategy: current_best
+  skip_perfect_score: false
+  use_merge: false
+  num_threads: 32
+  seed: 0
+  task_max_tokens: 1024
+  reflection_max_tokens: 32000
+  output_dir: ./outputs
+
+vllm:
+  port: 8080
+  max_model_len: 4096
+  max_batch_size: 16
+  batch_timeout: 0.05
+  gpu_memory_utilization: 0.90
+  enforce_eager: false
+  enable_chunked_prefill: false
+  max_num_batched_tokens: 2048
+  wsl_hack: true
+
+models:
+  optimizer_model:
+    name: "GPT-5.4"
+    end_point: "azure/gpt-5.4"
+  task_model:
+    name: "baseline"
+    hf_model_id: "google/gemma-3-4b-it"
+    path: "./data/models/"
