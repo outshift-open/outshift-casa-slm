@@ -95,3 +95,7 @@ Use the following to run all unit tests. Unit test don't require  GPU.
 ```bash
 pixi run test
 ```
+
+## License
+
+Distributed under the Apache 2.0 License. See [LICENSE](./LICENSE) for more information.
