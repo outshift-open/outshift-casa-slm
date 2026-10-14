@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Evaluate every LoRA checkpoint in a training run folder.
 
 Serves the shared base model once with all checkpoint adapters registered, then

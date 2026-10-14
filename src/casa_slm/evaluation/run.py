@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Evaluation pipeline for task-tool matching models."""
 
 import argparse

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Merge a single LoRA checkpoint into a standalone 16-bit model.
 
 Given a checkpoint directory produced during training (e.g.

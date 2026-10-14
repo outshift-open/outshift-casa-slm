@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Task-tool conversation formatting shared by SFT and its search."""
 
 import json

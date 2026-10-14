@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Read dataset from disk and prepare it for training and evaluation."""
 
 from collections.abc import Mapping

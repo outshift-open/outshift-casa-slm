@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Tests for regrouping curated per-tool rows into task-level examples."""
 
 from casa_slm.data_generation import regroup_curated_data as rcd

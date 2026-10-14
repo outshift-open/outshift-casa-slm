@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Build a fixed paired-balanced training dataset from curated tool data.
 
 The builder first keeps one-to-one positive/negative matches inside each task

@@ -1,3 +1,5 @@
+# Copyright (c) 2026 Cisco Systems, Inc. and its affiliates
+# SPDX-License-Identifier: Apache-2.0
 """Configuration dataclasses for the GRPO training pipeline.
 
 These are intentionally free of heavy imports (unsloth/torch/trl) so that an
