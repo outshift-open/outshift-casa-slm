@@ -1,4 +1,4 @@
-[![pytest](https://github.com/cisco-eti/casa-slm-paper/actions/workflows/pytest.yml/badge.svg)](https://github.com/cisco-eti/casa-slm-paper/actions/workflows/pytest.yml) [![pre-commit](https://github.com/cisco-eti/casa-slm-paper/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/cisco-eti/casa-slm-paper/actions/workflows/pre-commit.yml)
+[![pytest](https://github.com/outshift-open/outshift-casa-slm/actions/workflows/pytest.yml/badge.svg)](https://github.com/outshift-open/outshift-casa-slm/actions/workflows/pytest.yml) [![pre-commit](https://github.com/outshift-open/outshift-casa-slm/actions/workflows/pre-commit.yml/badge.svg)](https://github.com/outshift-open/outshift-casa-slm/actions/workflows/pre-commit.yml)
 
 # CASA-SLM paper
 
