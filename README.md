@@ -2,7 +2,9 @@
 
 # CASA-SLM paper
 
-This repository generates task to tool data, optimizes a matcher prompt with
+The repository contains the accompanying code and dataset to our paper: [Toward SLM-based agentic task-tool intent matching](https://arxiv.org/abs/2610.03213).
+
+The codebase generates task to tool data, optimizes a matcher prompt with
 GEPA, fine tunes Gemma with supervised fine tuning (SFT) and group relative
 policy optimization (GRPO), and evaluates held out examples. The code uses
 Pixi environments so CPU preparation and GPU training share a lockfile.

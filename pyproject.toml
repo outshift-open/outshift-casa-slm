@@ -1,5 +1,5 @@
 [project]
-name = "casa-slm-paper"
+name = "outshift-casa-slm"
 description = "Data generation, conversation generation, prompt optimization, fine-tuning, and evaluation for the CASA-SLM research paper"
 authors = [
   { name="Arash Salarian", email="asalaria@cisco.com" },
@@ -44,8 +44,8 @@ dependencies = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/cisco-eti/casa-slm-paper"
-"Bug Tracker" = "https://github.com/cisco-eti/casa-slm-paper/issues"
+"Homepage" = "https://github.com/outshift-open/outshift-casa-slm/issues"
+"Bug Tracker" = "https://github.com/outshift-open/outshift-casa-slm/issues"
 
 [build-system]
 requires = ["hatchling"]
@@ -75,7 +75,6 @@ ignore_missing_imports = true
 scripts_are_modules = true
 explicit_package_bases = true
 mypy_path = "src"
-exclude = [ 'wandb/' ]
 
 [tool.ruff]
 line-length = 120
