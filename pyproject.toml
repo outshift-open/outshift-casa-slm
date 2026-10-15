@@ -21,7 +21,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Operating System :: OS Independent",
 ]
-version = "0.0.1"
+version = "1.0.0"
 dependencies = [
   "cleanprompt~=0.1.1",
   # The training environment needs Hub 0.x for the source Transformers 4.57 stack.
@@ -101,7 +101,7 @@ platforms = [
 ]
 
 [tool.pixi.pypi-dependencies]
-casa-slm-paper = { path = ".", editable = true }
+outshift-casa-slm = { path = ".", editable = true }
 
 [tool.pixi.feature.dev.pypi-dependencies]
 pre-commit = "~=4.6.0"
