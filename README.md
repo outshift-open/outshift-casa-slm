@@ -92,7 +92,7 @@ and [GRPO](https://huggingface.co/docs/trl/v0.24.0/grpo_trainer) guides.
 - [Fine tuning and evaluation](docs/finetuning-evaluation.md)
 
 ## Unit tests
-Use the following to run all unit tests. Unit test don't require  GPU.
+Use the following to run all unit tests. Unit tests don't require a GPU.
 
 ```bash
 pixi run test
