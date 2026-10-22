@@ -2,7 +2,7 @@
 
 # CASA-SLM paper
 
-The repository contains the accompanying code and dataset to our paper: [Toward SLM-based agentic task-tool intent matching](https://arxiv.org/abs/2610.03213).
+The repository contains the accompanying code and dataset to our paper: [Toward SLM-based agentic task-tool intent matching](https://arxiv.org/abs/2610.03213). We have also published an associated [github page with some visualizations](https://outshift-open.github.io/outshift-casa-slm/).
 
 The codebase generates task to tool data, optimizes a matcher prompt with
 GEPA, fine tunes Gemma with supervised fine tuning (SFT) and group relative
